@@ -1,6 +1,12 @@
 # JEANS
 This repo contains code for Cross-lingual Entity Alignment for Knowledge Graphs with Incidental Supervision from Free Text
 
+## Install the dependency 
+```
+pip install -r requirements.txt
+```
+
+
 ## Data and Models
 We provide monolingual embeddings used in our experiments and release the pretrained models: 
 
