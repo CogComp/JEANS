@@ -21,5 +21,5 @@ https://github.com/muhaochen/MTransE
 To run the experiments, use:
 ```
 cd src
-python train.py
+python train_MUSE.py
 ```
