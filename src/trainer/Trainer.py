@@ -197,11 +197,8 @@ class Trainer(object):
             self.train1epoch_KM(1, self.loader_KG1, self.multiG.KG1, epoch)
             self.train1epoch_KM(2, self.loader_KG2, self.multiG.KG2, epoch)
 
-        if self.args["bootriple_h"] is True and epoch >= 1:
+        if self.args["langs"] != "fr":
             self.train1epoch_KM_bootriple_h(2, self.loader_KG2_h, self.multiG.KG2, epoch)
-        if self.args["bootriple_t"] is True and epoch >= 1:
-            self.train1epoch_KM_bootriple_t(2, self.loader_KG2_t, self.multiG.KG2, epoch)
-
 
     def train_SG(self, epoch):
         self.train_batch_SG(self.loader_SG1, 1)
@@ -342,32 +339,6 @@ class Trainer(object):
         logger.info("KM Loss of %d epoch bootriple, # batch: %s, loss: %s, Time_use: %s" % (epoch, id, l, time.time() - t0))
         logger.info("pos score: %s, neg score: %s" % (np.mean(this_pos), np.mean(this_neg)))
 
-    def train1epoch_KM_bootriple_t(self, KG_index, loader, KG, epoch):
-        this_loss = []
-        this_neg, this_pos = [], []
-        t0 = time.time()
-        nbours = self.nbours1 if KG_index == 1 else self.nbours2
-
-        for id, batch in enumerate(self.gen_TransE_batch(loader, KG, nbours)):
-            if self.args["GCN"]:
-                self.model.GCN4ent_embed(self.multiG)
-            batch_emb = self.model.forward_KM_bootriple_t(KG_index, batch)
-            if self.args["loss"] == "marginal":
-                loss, pos, neg = self.model.MtransE.forward_KM_marginal(batch_emb)
-            elif self.args["loss"] == "limited":
-                loss, pos, neg = self.model.MtransE.forward_KM_limited(batch_emb)
-            elif self.args["loss"] == "MarginRankingLoss":
-                loss, pos, neg = self.model.MtransE.forward_KM_MarginRankingLoss(batch_emb)
-            this_loss.append(loss.cpu().data)
-            this_pos.append(pos.cpu().data)
-            this_neg.append(neg.cpu().data)
-
-            self.optimizer.zero_grad()
-            loss.backward()
-            self.optimizer.step()
-        l = np.mean(this_loss)
-        logger.info("KM Loss of %d epoch bootriple, # batch: %s, loss: %s, Time_use: %s" % (epoch, id, l, time.time() - t0))
-        logger.info("pos score: %s, neg score: %s" % (np.mean(this_pos), np.mean(this_neg)))
 
     def train1epoch_DistMult(self, KG_index, loader, KG, epoch):
         this_loss = []
@@ -428,9 +399,8 @@ class Trainer(object):
             with torch.no_grad():
                 KG1_ents = torch.LongTensor(self.multiG.KG1.ents)
                 KG2_ents = torch.LongTensor(self.multiG.KG2.ents)
-                tmp_precision_train = self.model.test(KG1_ents, KG2_ents, self.multiG.align_ents, self.eval_method, multiG = self.multiG, test_train = True)
                 tmp_precision = self.model.test(KG1_ents, KG2_ents[0:len(self.multiG.align_ents_test)], self.multiG.align_ents_test, self.eval_method, multiG = self.multiG, test_train = False)
-                if tmp_precision_train > self.precision_at_1 - 1:
+                if tmp_precision > self.precision_at_1 - 1:
                     self.precision_at_1 = tmp_precision
                 else:
                     sys.exit("accuracy declined")

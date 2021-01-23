@@ -116,26 +116,6 @@ class mymodel(nn.Module):
         # logger.info(f"Combine embedding table, Time use: {time.time()-t0}")
         # del ent_embed1, ent_embed2
 
-    def forward_KM_bootriple_t(self, KG_index, input):
-        input = list(input)
-        if self.cuda_avl:
-            for i, v in enumerate(input.copy()):
-                input[i] = v.cuda()
-        pos_triples, neg_triples = input
-        A_h_batch, A_rel_batch, A_t_batch = pos_triples[:, 0], pos_triples[:, 1], pos_triples[:, 2]
-        A_hn_batch, A_reln_batch, A_tn_batch = neg_triples[:, 0], neg_triples[:, 1], neg_triples[:, 2]
-        # for MTransE
-        # emb_ent1, emb_ent12, emb_rel = (self.emb_ew1, self.emb_ew2, self.emb_rels1) if KG_index == 1 else (self.emb_ew2, self.emb_ew1, self.emb_rels1)
-        A_h_embs = self.emb_ew2(A_h_batch)
-        A_hn_embs = self.emb_ew2(A_hn_batch)
-        A_t_embs = self.mapping(self.emb_ew1(A_t_batch))
-        A_tn_embs = self.mapping(self.emb_ew1(A_tn_batch))
-
-        # A_rel_embs = self.mapping_rel(self.emb_rels1(A_rel_batch))
-        # A_reln_embs = self.mapping_rel(self.emb_rels1(A_reln_batch))
-        A_rel_embs = self.emb_rels2(A_rel_batch)
-        A_reln_embs = self.emb_rels2(A_reln_batch)
-        return A_h_embs, A_rel_embs, A_t_embs, A_hn_embs, A_reln_embs, A_tn_embs
 
 
     def forward_KM_bootriple_h(self, KG_index, input):
@@ -148,10 +128,10 @@ class mymodel(nn.Module):
         A_hn_batch, A_reln_batch, A_tn_batch = neg_triples[:, 0], neg_triples[:, 1], neg_triples[:, 2]
         # for MTransE
         # emb_ent1, emb_ent12, emb_rel = (self.emb_ew1, self.emb_ew2, self.emb_rels1) if KG_index == 1 else (self.emb_ew2, self.emb_ew1, self.emb_rels1)
-        A_h_embs = self.mapping(self.emb_ew1(A_h_batch))
-        A_hn_embs = self.mapping(self.emb_ew1(A_hn_batch))
-        A_t_embs = self.emb_ew2(A_t_batch)
-        A_tn_embs = self.emb_ew2(A_tn_batch)
+        A_h_embs = F.normalize(self.mapping(self.emb_ew1(A_h_batch)), 2, 1)
+        A_hn_embs = F.normalize(self.mapping(self.emb_ew1(A_hn_batch)), 2, 1)
+        A_t_embs = F.normalize(self.emb_ew2(A_t_batch), 2, 1)
+        A_tn_embs = F.normalize(self.emb_ew2(A_tn_batch), 2, 1)
 
         # A_rel_embs = self.mapping_rel(self.emb_rels1(A_rel_batch))
         # A_reln_embs = self.mapping_rel(self.emb_rels1(A_reln_batch))
@@ -200,8 +180,6 @@ class mymodel(nn.Module):
             # A_t_embs = torch.cat((A_t_embs, emb_ent_GCN[A_t_batch]), dim = 1)
             # A_tn_embs = torch.cat((A_tn_embs, emb_ent_GCN[A_tn_batch]), dim = 1)
             # torch.cat((e1_batch_emb, r1_batch_emb), dim=0)
-
-
         return A_h_embs, A_rel_embs, A_t_embs, A_hn_embs, A_reln_embs, A_tn_embs
 
     def forward_DistMult(self, KG_index, input):
@@ -285,8 +263,8 @@ class mymodel(nn.Module):
         # test_ent1_vocab.sort()
         # test_ent2_vocab.sort()
         # swj
-        # refs1_embed = F.normalize(self.mapping(self.emb_ew1[selected_pairs[:, 0]]), 2, 1)
-        # refs2_embed = F.normalize(self.emb_ew2[KG2_all_ents], 2, 1)
+        # refs1_embed = F.normalize(self.mapping(self.emb_ew1.weight[KG1_all_ents]), 2, 1)
+        # refs2_embed = F.normalize(self.emb_ew2.weight[KG1_all_ents], 2, 1)
         # refs1_embed = self.mapping(self.emb_ew1(selected_pairs[:, 0]))
         if not self.args["GCN"]:
             refs1_embed = self.mapping(self.emb_ew1.weight[KG1_all_ents])

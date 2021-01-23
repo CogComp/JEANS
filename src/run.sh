@@ -1,0 +1,3 @@
+python train_MUSE.py --langs fr --emb_ew1 "../data/wiki2vec/fr_en/enwiki_300d_pro_4notfound.txt" --emb_ew2 "../data/wiki2vec/fr_en/frwiki_300d_pro_4notfound.txt" --multiG "../data/preprocessed_data/fr_en" --save_path "../data/saved_model/fr_en"
+python train_MUSE.py --langs zh --emb_ew1 "../data/wiki2vec/zh_en/enwiki_300d_pro_4notfound.txt" --emb_ew2 "../data/wiki2vec/zh_en/frwiki_300d_pro_4notfound.txt" --multiG "../data/preprocessed_data/zh_en" --save_path "../data/saved_model/zh_en"
+python train_MUSE.py --langs ja --emb_ew1 "../data/wiki2vec/ja_en/enwiki_300d_pro_4notfound.txt" --emb_ew2 "../data/wiki2vec/ja_en/frwiki_300d_pro_4notfound.txt" --multiG "../data/preprocessed_data/ja_en" --save_path "../data/saved_model/ja_en"
