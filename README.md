@@ -9,6 +9,7 @@ pip install -r requirements.txt
 
 ## Data and Models
 We provide monolingual embeddings used in our experiments and release the pretrained models: https://drive.google.com/drive/folders/1N52NGr5YgL0zydiWM-ESj4vbYIrEpGCO?usp=sharing
+Please unzip the folder to the local repository.
 
 For the original dataset, please refer to: 
 
@@ -23,3 +24,11 @@ To run the experiments, use:
 cd src
 python train_MUSE.py
 ```
+
+or scripts:
+```
+cd src
+./scripts/run.sh
+```
+
+To use pretrained models, please set the load_path in the argument.
