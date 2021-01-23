@@ -9,6 +9,7 @@ pip install -r requirements.txt
 
 ## Data and Models
 We provide monolingual embeddings used in our experiments and release the pretrained models: https://drive.google.com/drive/folders/1N52NGr5YgL0zydiWM-ESj4vbYIrEpGCO?usp=sharing
+
 Please unzip the folder to the local repository.
 
 For the original dataset, please refer to: 
