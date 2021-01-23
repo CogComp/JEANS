@@ -23,16 +23,11 @@ https://github.com/muhaochen/MTransE
 To run the experiments, use:
 ```
 cd src
-python train_MUSE.py
-```
-
-or scripts:
-```
-cd src
-./scripts/run.sh
+./run.sh
 ```
 
 To use pretrained models, please set restore to True and specify the load_path in the argument
 ```
+cd src
 python train_MUSE.py --restore True --load_path "pretrained_model_path"
 ```
