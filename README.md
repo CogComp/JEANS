@@ -33,3 +33,6 @@ cd src
 ```
 
 To use pretrained models, please set restore to True and specify the load_path in the argument
+```
+python train_MUSE.py --restore True --load_path "pretrained_model_path"
+```
