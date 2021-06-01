@@ -16,7 +16,6 @@ For the original dataset, please refer to:
 
 https://github.com/nju-websoft/JAPE
 
-https://github.com/muhaochen/MTransE
 
 
 ## Run the experiments
