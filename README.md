@@ -8,7 +8,7 @@ pip install -r requirements.txt
 
 
 ## Data and Models
-We provide monolingual embeddings used in our experiments and release the pretrained models: https://drive.google.com/drive/folders/1N52NGr5YgL0zydiWM-ESj4vbYIrEpGCO?usp=sharing
+We provide monolingual embeddings used in our experiments and release the pretrained models: https://drive.google.com/drive/folders/1N52NGr5YgL0zydiWM-ESj4vbYIrEpGCO?usp=sharing, https://drive.google.com/file/d/191lP_qgxHrmQ2A6Cupid0_q8kOSAgeFO/view?usp=sharing
 
 Please put the three folders in the data directory
 
